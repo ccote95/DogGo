@@ -34,6 +34,26 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[c:/Users/chadc/workspace/csharp/DogGo/Views/Owners/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3duZXJzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/chadc/workspace/csharp/DogGo/Views/Owners/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3duZXJzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/chadc/workspace/csharp/DogGo/Views/Owners/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3duZXJzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/chadc/workspace/csharp/DogGo/Views/Owners/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3duZXJzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/chadc/workspace/csharp/DogGo/Views/Owners/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3duZXJzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [c:/Users/chadc/workspace/csharp/DogGo/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
