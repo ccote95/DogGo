@@ -22,7 +22,8 @@ namespace DogGo.Controllers
         // GET: Owners
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Owners.ToListAsync());
+            List<Owner> owners = _context.Owners.ToList();
+            return View(owners);
         }
 
         // GET: Owners/Details/5
