@@ -35,7 +35,8 @@ namespace DogGo.Controllers
             }
 
             var owner = await _context.Owners
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(o => o.Dogs)
+                .FirstOrDefaultAsync(o => o.Id == id);
             if (owner == null)
             {
                 return NotFound();
@@ -149,6 +150,13 @@ namespace DogGo.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        // public async Task<ActionResult> GetWithDogs(int id)
+        // {
+        //     var owner = await _context.Owners
+        //     .Include(o => o.Dogs)
+        //     .Where(d =>  == )
+        // }
 
         private bool OwnerExists(int id)
         {
