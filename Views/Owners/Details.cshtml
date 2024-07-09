@@ -1,7 +1,7 @@
 @model DogGo.Models.Owner
 
 @{
-    Layout = null;
+    Layout = Layout;
 }
 
 <!DOCTYPE html>
@@ -48,6 +48,25 @@
             @Html.DisplayFor(model => model.Phone)
         </dd>
     </dl>
+
+    <h4>Dogs</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Breed</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var dog in Model.Dogs)
+            {
+                <tr>
+                    <td>@dog.Name</td>
+                    <td>@dog.Breed</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
