@@ -8,6 +8,6 @@ namespace DogGo.Models
         public String Breed { get; set; }
         public string? Notes { get; set; }
         public string? ImageUrl { get; set; }
-        public Owner DogOwner { get; set; }
+        public Owner? DogOwner { get; set; }
     }
 }
