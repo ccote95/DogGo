@@ -45,9 +45,18 @@ namespace DogGo.Controllers
         }
 
         // GET: Owners/Create
-        public IActionResult Create()
+        // GET: Owners/Create
+        public ActionResult Create()
         {
-            return View();
+            List<Neighborhood> neighborhoods = _context.Neighborhoods.ToList();
+
+            OwnerFormViewModel vm = new OwnerFormViewModel()
+            {
+                Owner = new Owner(),
+                Neighborhoods = neighborhoods
+            };
+
+            return View(vm);
         }
 
         // POST: Owners/Create
