@@ -84,11 +84,18 @@ namespace DogGo.Controllers
             }
 
             var owner = await _context.Owners.FindAsync(id);
+            List<Neighborhood> neighborhoods = _context.Neighborhoods.ToList();
             if (owner == null)
             {
                 return NotFound();
             }
-            return View(owner);
+
+            OwnerFormViewModel vm = new OwnerFormViewModel()
+            {
+                Owner = owner,
+                Neighborhoods = neighborhoods
+            };
+            return View(vm);
         }
 
         // POST: Owners/Edit/5
