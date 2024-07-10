@@ -56,7 +56,7 @@ namespace DogGo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Email,Name,Address,NeighborhoodId,Phone")] Owner owner)
+        public async Task<IActionResult> Create(Owner owner)
         {
             if (ModelState.IsValid)
             {
@@ -150,13 +150,6 @@ namespace DogGo.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-        // public async Task<ActionResult> GetWithDogs(int id)
-        // {
-        //     var owner = await _context.Owners
-        //     .Include(o => o.Dogs)
-        //     .Where(d =>  == )
-        // }
 
         private bool OwnerExists(int id)
         {
