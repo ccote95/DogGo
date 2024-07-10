@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DogGo.Data;
 using DogGo.Models;
+using DogGo.Models.ViewModels;
 
 namespace DogGo.Controllers
 {
@@ -29,22 +30,23 @@ namespace DogGo.Controllers
         }
 
         // GET: Walkers/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
+            Walker walker = _context.Walkers.FirstOrDefault(w => w.Id == id);
+            List<Walker> walkers = _context.Walkers.Where(w => w.NeighborhoodId == walker.NeighborhoodId).ToList();
 
-            var walker = await _context.Walkers
-                .Include(w => w.Neighborhood)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (walker == null)
+            WalkerProfileViewModel vm = new WalkerProfileViewModel()
             {
-                return NotFound();
-            }
+                walker = walker,
+                Walkers = walkers
+            };
 
-            return View(walker);
+            return View(vm);
+
         }
 
         // GET: Walkers/Create

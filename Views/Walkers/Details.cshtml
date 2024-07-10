@@ -1,45 +1,77 @@
-@model DogGo.Models.Walker
+@model DogGo.Models.ViewModels.WalkerProfileViewModel
 
-@{
-    Layout = null;
-}
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
-</head>
-<body>
-
+@{ ViewData["Title"] ="Profile"; }
 <div>
-    <h4>Walker</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-           <img class="bg-info" src="@Model.ImageUrl" alt="avatar" />
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageUrl)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Neighborhood)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Neighborhood.Id)
-        </dd>
-    </dl>
+  <h1 class="mb-4">@Model.walker.Name</h1>
+
+  <section class="container">
+    <img
+      style="width:100px;float:left;margin-right:20px"
+      src="@Model.walker.ImageUrl"
+    />
+    <div>
+      @* <label class="font-weight-bold">Address:</label>
+      <span>@Model.walker.Address</span>
+    </div>
+    <div>
+      <label class="font-weight-bold">Phone:</label>
+      <span>@Model.walker.Phone</span>
+    </div>
+    <div>
+      <label class="font-weight-bold">Email:</label>
+      <span>@Model.walker.Email</span> *@
+    </div>
+  </section>
+
+  <hr class="mt-5" />
+  <div class="clearfix"></div>
+
+  <div class="row">
+    @* <section class="col-8 container mt-5">
+      <h1 class="text-left">Dogs</h1>
+
+      <div class="row">
+        @foreach (Dog dog in Model.Dogs) {
+        <div class="card m-4" style="width: 18rem;">
+          @if (String.IsNullOrEmpty(dog.ImageUrl)) {
+          <img
+            src="https://cdn.pixabay.com/photo/2018/08/15/13/12/dog-3608037_960_720.jpg"
+            class="card-img-top"
+            alt="Doggo"
+          />
+          } else {
+          <img src="@dog.ImageUrl" class="card-img-top" alt="Doggo" />
+          }
+          <div class="card-body">
+            <div>
+              <label class="font-weight-bold">Name:</label>
+              <span>@dog.Name</span>
+            </div>
+            <div>
+              <label class="font-weight-bold">Breed:</label>
+              <span>@dog.Breed</span>
+            </div>
+            <div>
+              <label class="font-weight-bold">Notes:</label>
+              <p>@dog.Notes</p>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </section> *@
+
+    <section class="col-lg-4 col-md-8 container mt-5">
+      <h1>Walkers Near Me</h1>
+
+      <ul class="list-group mt-4">
+        @foreach (Walker walker in Model.Walkers) {
+        <li class="list-group-item disabled" aria-disabled="true">
+          <img src="@walker.ImageUrl" style="width:50px" />
+          <span class="font-weight-bold ml-4">@walker.Name</span>
+        </li>
+        }
+      </ul>
+    </section>
+  </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
-</body>
-</html>
