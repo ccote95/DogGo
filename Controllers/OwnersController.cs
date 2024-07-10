@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DogGo.Data;
 using DogGo.Models;
+using DogGo.Models.ViewModels;
 
 namespace DogGo.Controllers
 {
@@ -27,28 +28,35 @@ namespace DogGo.Controllers
         }
 
         // GET: Owners/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public ActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            Owner owner = _context.Owners.FirstOrDefault(o => o.Id == id);
+            List<Dog> dogs = _context.Dogs.Where(d => d.OwnerId == id).ToList();
+            List<Walker> walkers = _context.Walkers.Where(w => w.NeighborhoodId == owner.NeighborhoodId).ToList();
 
-            var owner = await _context.Owners
-                .Include(o => o.Dogs)
-                .FirstOrDefaultAsync(o => o.Id == id);
-            if (owner == null)
+            ProfileViewModel vm = new ProfileViewModel()
             {
-                return NotFound();
-            }
+                Owner = owner,
+                Dogs = dogs,
+                Walkers = walkers
+            };
 
-            return View(owner);
+            return View(vm);
         }
 
         // GET: Owners/Create
-        public IActionResult Create()
+        // GET: Owners/Create
+        public ActionResult Create()
         {
-            return View();
+            List<Neighborhood> neighborhoods = _context.Neighborhoods.ToList();
+
+            OwnerFormViewModel vm = new OwnerFormViewModel()
+            {
+                Owner = new Owner(),
+                Neighborhoods = neighborhoods
+            };
+
+            return View(vm);
         }
 
         // POST: Owners/Create
@@ -76,11 +84,18 @@ namespace DogGo.Controllers
             }
 
             var owner = await _context.Owners.FindAsync(id);
+            List<Neighborhood> neighborhoods = _context.Neighborhoods.ToList();
             if (owner == null)
             {
                 return NotFound();
             }
-            return View(owner);
+
+            OwnerFormViewModel vm = new OwnerFormViewModel()
+            {
+                Owner = owner,
+                Neighborhoods = neighborhoods
+            };
+            return View(vm);
         }
 
         // POST: Owners/Edit/5
