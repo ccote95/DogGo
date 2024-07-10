@@ -151,13 +151,6 @@ namespace DogGo.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // public async Task<ActionResult> GetWithDogs(int id)
-        // {
-        //     var owner = await _context.Owners
-        //     .Include(o => o.Dogs)
-        //     .Where(d =>  == )
-        // }
-
         private bool OwnerExists(int id)
         {
             return _context.Owners.Any(e => e.Id == id);
