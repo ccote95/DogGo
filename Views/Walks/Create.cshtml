@@ -1,7 +1,7 @@
 @model DogGo.Models.Walk
 
 @{
-    Layout = null;
+    Layout = Layout;
 }
 
 <!DOCTYPE html>
@@ -20,15 +20,15 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="DogId" class="control-label"></label>
-                <select asp-for="DogId" class ="form-control" asp-items="ViewBag.DogId"></select>
+                <label asp-for="DogId" class="control-label">Dog Name</label>
+                <select asp-for="DogId" class ="form-control" asp-items="ViewBag.DogName"></select>
             </div>
             <div class="form-group">
-                <label asp-for="WalkerId" class="control-label"></label>
-                <select asp-for="WalkerId" class ="form-control" asp-items="ViewBag.WalkerId"></select>
+                <label asp-for="WalkerId" class="control-label">Walker Name</label>
+                <select asp-for="WalkerId" class ="form-control" asp-items="ViewBag.WalkerName"></select>
             </div>
             <div class="form-group">
-                <label asp-for="Duration" class="control-label"></label>
+                <label asp-for="Duration" class="control-label">Duration(Miles)</label>
                 <input asp-for="Duration" class="form-control" />
                 <span asp-validation-for="Duration" class="text-danger"></span>
             </div>

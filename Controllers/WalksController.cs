@@ -49,10 +49,38 @@ namespace DogGo.Controllers
         // GET: Walks/Create
         public IActionResult Create()
         {
-            ViewData["DogId"] = new SelectList(_context.Dogs, "Id", "Id");
-            ViewData["WalkerId"] = new SelectList(_context.Walkers, "Id", "Id");
+            // Fetch dogs and walkers from the database
+            var dogs = _context.Dogs.ToList();
+            var walkers = _context.Walkers.ToList();
+
+            // Create SelectList with default option
+            var dogNameList = new List<SelectListItem>
+    {
+        new SelectListItem { Value = "", Text = "Select a Dog to walk" }
+    };
+            dogNameList.AddRange(dogs.Select(d => new SelectListItem
+            {
+                Value = d.Id.ToString(),
+                Text = d.Name
+            }));
+
+            var walkerNameList = new List<SelectListItem>
+    {
+        new SelectListItem { Value = "", Text = "Select a Walker" }
+    };
+            walkerNameList.AddRange(walkers.Select(w => new SelectListItem
+            {
+                Value = w.Id.ToString(),
+                Text = w.Name
+            }));
+
+            // Assign the lists to ViewData
+            ViewData["DogName"] = new SelectList(dogNameList, "Value", "Text");
+            ViewData["WalkerName"] = new SelectList(walkerNameList, "Value", "Text");
+
             return View();
         }
+
 
         // POST: Walks/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
