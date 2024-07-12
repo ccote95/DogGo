@@ -56,7 +56,7 @@ namespace DogGo.Controllers
             // Create SelectList with default option
             var dogNameList = new List<SelectListItem>
     {
-        new SelectListItem { Value = "", Text = "Select a Dog to walk" }
+        new SelectListItem { Value = "", Text = "Select..." }
     };
             dogNameList.AddRange(dogs.Select(d => new SelectListItem
             {
@@ -66,7 +66,7 @@ namespace DogGo.Controllers
 
             var walkerNameList = new List<SelectListItem>
     {
-        new SelectListItem { Value = "", Text = "Select a Walker" }
+        new SelectListItem { Value = "", Text = "Select..." }
     };
             walkerNameList.AddRange(walkers.Select(w => new SelectListItem
             {
@@ -87,7 +87,7 @@ namespace DogGo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Walk walk)
+        public async Task<IActionResult> Create([Bind("Id,DogId,WalkerId,Duration")] Walk walk)
         {
             if (ModelState.IsValid)
             {
