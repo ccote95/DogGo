@@ -1,7 +1,7 @@
 @model IEnumerable<DogGo.Models.Walk>
 
 @{
-    Layout = null;
+    Layout = Layout;
 }
 
 <!DOCTYPE html>
@@ -34,13 +34,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Dog.Id)
+                @Html.DisplayFor(modelItem => item.Dog.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Walker.Id)
+                @Html.DisplayFor(modelItem => item.Walker.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Duration)
+                @Html.DisplayFor(modelItem => item.Duration) Miles
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
