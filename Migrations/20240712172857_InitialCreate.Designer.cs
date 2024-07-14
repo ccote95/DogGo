@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DogGo.Migrations
 {
     [DbContext(typeof(DogGoDbContext))]
-    [Migration("20240708173123_InitialCreate")]
+    [Migration("20240712172857_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -327,9 +327,6 @@ namespace DogGo.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DogId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("Duration")
                         .HasColumnType("integer");
 
@@ -338,11 +335,24 @@ namespace DogGo.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DogId");
-
                     b.HasIndex("WalkerId");
 
                     b.ToTable("Walks");
+                });
+
+            modelBuilder.Entity("DogGo.Models.WalkDog", b =>
+                {
+                    b.Property<int>("WalkId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("DogId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("WalkId", "DogId");
+
+                    b.HasIndex("DogId");
+
+                    b.ToTable("WalkDogs");
                 });
 
             modelBuilder.Entity("DogGo.Models.Walker", b =>
@@ -582,21 +592,32 @@ namespace DogGo.Migrations
 
             modelBuilder.Entity("DogGo.Models.Walk", b =>
                 {
-                    b.HasOne("DogGo.Models.Dog", "Dog")
-                        .WithMany()
-                        .HasForeignKey("DogId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("DogGo.Models.Walker", "Walker")
                         .WithMany()
                         .HasForeignKey("WalkerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Walker");
+                });
+
+            modelBuilder.Entity("DogGo.Models.WalkDog", b =>
+                {
+                    b.HasOne("DogGo.Models.Dog", "Dog")
+                        .WithMany("WalkDogs")
+                        .HasForeignKey("DogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DogGo.Models.Walk", "Walk")
+                        .WithMany("WalkDogs")
+                        .HasForeignKey("WalkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Dog");
 
-                    b.Navigation("Walker");
+                    b.Navigation("Walk");
                 });
 
             modelBuilder.Entity("DogGo.Models.Walker", b =>
@@ -610,9 +631,19 @@ namespace DogGo.Migrations
                     b.Navigation("Neighborhood");
                 });
 
+            modelBuilder.Entity("DogGo.Models.Dog", b =>
+                {
+                    b.Navigation("WalkDogs");
+                });
+
             modelBuilder.Entity("DogGo.Models.Owner", b =>
                 {
                     b.Navigation("Dogs");
+                });
+
+            modelBuilder.Entity("DogGo.Models.Walk", b =>
+                {
+                    b.Navigation("WalkDogs");
                 });
 #pragma warning restore 612, 618
         }

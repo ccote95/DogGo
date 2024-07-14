@@ -93,7 +93,6 @@ namespace DogGo.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    DogId = table.Column<int>(type: "integer", nullable: false),
                     WalkerId = table.Column<int>(type: "integer", nullable: false),
                     Duration = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -101,15 +100,33 @@ namespace DogGo.Migrations
                 {
                     table.PrimaryKey("PK_Walks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Walks_Dogs_DogId",
+                        name: "FK_Walks_Walkers_WalkerId",
+                        column: x => x.WalkerId,
+                        principalTable: "Walkers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WalkDogs",
+                columns: table => new
+                {
+                    WalkId = table.Column<int>(type: "integer", nullable: false),
+                    DogId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WalkDogs", x => new { x.WalkId, x.DogId });
+                    table.ForeignKey(
+                        name: "FK_WalkDogs_Dogs_DogId",
                         column: x => x.DogId,
                         principalTable: "Dogs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Walks_Walkers_WalkerId",
-                        column: x => x.WalkerId,
-                        principalTable: "Walkers",
+                        name: "FK_WalkDogs_Walks_WalkId",
+                        column: x => x.WalkId,
+                        principalTable: "Walks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -208,14 +225,14 @@ namespace DogGo.Migrations
                 column: "OwnerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_WalkDogs_DogId",
+                table: "WalkDogs",
+                column: "DogId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Walkers_NeighborhoodId",
                 table: "Walkers",
                 column: "NeighborhoodId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Walks_DogId",
-                table: "Walks",
-                column: "DogId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Walks_WalkerId",
@@ -227,16 +244,19 @@ namespace DogGo.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Walks");
+                name: "WalkDogs");
 
             migrationBuilder.DropTable(
                 name: "Dogs");
 
             migrationBuilder.DropTable(
-                name: "Walkers");
+                name: "Walks");
 
             migrationBuilder.DropTable(
                 name: "Owners");
+
+            migrationBuilder.DropTable(
+                name: "Walkers");
 
             migrationBuilder.DropTable(
                 name: "Neighborhoods");
