@@ -4,52 +4,52 @@
     Layout = Layout;
 }
 
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
+    <title>Walks Index</title>
 </head>
 <body>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
+<h2>Walks</h2>
+
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Dog)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Walker)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Duration)
-            </th>
-            <th></th>
+            <th>Walker</th>
+            <th>Dogs</th>
+            <th>Duration (Minutes)</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Dog.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Walker.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Duration) Miles
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var walk in Model)
+        {
+            <tr>
+                <td>@walk.Walker.Name</td>
+                <td>
+                    <ul>
+                        @foreach (var walkDog in walk.WalkDogs)
+                        {
+                            <li>@walkDog.Dog.Name</li>
+                        }
+                    </ul>
+                </td>
+                <td>@walk.Duration</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@walk.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@walk.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@walk.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<a asp-action="Create">Create New Walk</a>
+
 </body>
 </html>
+

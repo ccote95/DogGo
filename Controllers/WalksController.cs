@@ -22,7 +22,7 @@ namespace DogGo.Controllers
         // GET: Walks
         public async Task<IActionResult> Index()
         {
-            var dogGoDbContext = _context.Walks.Include(w => w.Dog).Include(w => w.Walker);
+            var dogGoDbContext = _context.Walks.Include(w => w.WalkDogs).ThenInclude(wd => wd.Dog).Include(w => w.Walker);
             return View(await dogGoDbContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace DogGo.Controllers
             }
 
             var walk = await _context.Walks
-                .Include(w => w.Dog)
+                .Include(w => w.WalkDogs)
                 .Include(w => w.Walker)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (walk == null)
@@ -49,34 +49,17 @@ namespace DogGo.Controllers
         // GET: Walks/Create
         public IActionResult Create()
         {
-            // Fetch dogs and walkers from the database
             var dogs = _context.Dogs.ToList();
             var walkers = _context.Walkers.ToList();
 
-            // Create SelectList with default option
-            var dogNameList = new List<SelectListItem>
-    {
-        new SelectListItem { Value = "", Text = "Select..." }
-    };
-            dogNameList.AddRange(dogs.Select(d => new SelectListItem
-            {
-                Value = d.Id.ToString(),
-                Text = d.Name
-            }));
+            // Initialize SelectedDogIds with an empty list
+            // var walk = new Walk
+            // {
+            //     SelectedDogIds = new List<int>()
+            // };
 
-            var walkerNameList = new List<SelectListItem>
-    {
-        new SelectListItem { Value = "", Text = "Select..." }
-    };
-            walkerNameList.AddRange(walkers.Select(w => new SelectListItem
-            {
-                Value = w.Id.ToString(),
-                Text = w.Name
-            }));
-
-            // Assign the lists to ViewData
-            ViewData["DogName"] = new SelectList(dogNameList, "Value", "Text");
-            ViewData["WalkerName"] = new SelectList(walkerNameList, "Value", "Text");
+            ViewData["DogName"] = new SelectList(dogs, "Id", "Name");
+            ViewData["WalkerName"] = new SelectList(walkers, "Id", "Name");
 
             return View();
         }
@@ -85,20 +68,39 @@ namespace DogGo.Controllers
         // POST: Walks/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DogId,WalkerId,Duration")] Walk walk)
+        public IActionResult Create(Walk walk)
         {
             if (ModelState.IsValid)
             {
+                // Process SelectedDogIds here before saving to database
+                walk.WalkDogs = walk.SelectedDogIds
+                    .Select(dogId => new WalkDog { DogId = dogId, WalkId = walk.Id })
+                    .ToList();
+
                 _context.Add(walk);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
+
+                // Redirect to Index or another action
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DogId"] = new SelectList(_context.Dogs, "Id", "Id", walk.DogId);
-            ViewData["WalkerId"] = new SelectList(_context.Walkers, "Id", "Id", walk.WalkerId);
+
+            // Handle ModelState.IsValid == false
+            // Reload dropdowns and return to view
+            var dogs = _context.Dogs.ToList();
+            var walkers = _context.Walkers.ToList();
+
+            ViewData["DogName"] = new SelectList(dogs, "Id", "Name");
+            ViewData["WalkerName"] = new SelectList(walkers, "Id", "Name");
+
             return View(walk);
         }
+
+
+
+
 
         // GET: Walks/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -113,7 +115,7 @@ namespace DogGo.Controllers
             {
                 return NotFound();
             }
-            ViewData["DogId"] = new SelectList(_context.Dogs, "Id", "Id", walk.DogId);
+            ViewData["DogId"] = new SelectList(_context.Dogs, "Id", "Id", walk.WalkDogs);
             ViewData["WalkerId"] = new SelectList(_context.Walkers, "Id", "Id", walk.WalkerId);
             return View(walk);
         }
@@ -150,11 +152,10 @@ namespace DogGo.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DogId"] = new SelectList(_context.Dogs, "Id", "Id", walk.DogId);
+            ViewData["DogId"] = new SelectList(_context.Dogs, "Id", "Id", walk.WalkDogs);
             ViewData["WalkerId"] = new SelectList(_context.Walkers, "Id", "Id", walk.WalkerId);
             return View(walk);
         }
-
         // GET: Walks/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -164,9 +165,11 @@ namespace DogGo.Controllers
             }
 
             var walk = await _context.Walks
-                .Include(w => w.Dog)
+                .Include(w => w.WalkDogs)
+                    .ThenInclude(wd => wd.Dog)
                 .Include(w => w.Walker)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (walk == null)
             {
                 return NotFound();

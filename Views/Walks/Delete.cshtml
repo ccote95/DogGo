@@ -19,11 +19,16 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Dog)
+           Dogs
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Dog.Id)
-        </dd>
+       <dd class="col-sm-10">
+                    <ul>
+                        @foreach (var walkDog in Model.WalkDogs)
+                        {
+                            <li>@walkDog.Dog.Name</li>
+                        }
+                    </ul>
+                </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Walker)
         </dt>

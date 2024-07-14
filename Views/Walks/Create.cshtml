@@ -5,7 +5,6 @@
 }
 
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -19,20 +18,26 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group">
-                <label asp-for="DogId" class="control-label">Dog Name</label>
-                <select asp-for="DogId" class="form-control" asp-items="ViewBag.DogName"></select>
+                <label asp-for="SelectedDogIds" class="control-label">Select Dogs</label>
+                <select asp-for="SelectedDogIds" class="form-control" asp-items="ViewBag.DogName" multiple="multiple"></select>
+                <span asp-validation-for="SelectedDogIds" class="text-danger"></span>
             </div>
+
+
             <div class="form-group">
-                <label asp-for="WalkerId" class="control-label">Walker Name</label>
+                <label asp-for="WalkerId" class="control-label">Select Walker</label>
                 <select asp-for="WalkerId" class="form-control" asp-items="ViewBag.WalkerName"></select>
+                <span asp-validation-for="WalkerId" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Duration" class="control-label"></label>
+                <label asp-for="Duration" class="control-label">Duration (Minutes)</label>
                 <input asp-for="Duration" class="form-control" />
                 <span asp-validation-for="Duration" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

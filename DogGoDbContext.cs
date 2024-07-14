@@ -9,6 +9,7 @@ public class DogGoDbContext : DbContext
     public DbSet<Owner> Owners { get; set; }
     public DbSet<Walk> Walks { get; set; }
     public DbSet<Walker> Walkers { get; set; }
+    public DbSet<WalkDog> WalkDogs { get; set; }
 
     public DogGoDbContext(DbContextOptions<DogGoDbContext> context) : base(context)
     {
@@ -16,6 +17,20 @@ public class DogGoDbContext : DbContext
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<WalkDog>()
+            .HasKey(wd => new { wd.WalkId, wd.DogId });
+
+        modelBuilder.Entity<WalkDog>()
+            .HasOne(wd => wd.Walk)
+            .WithMany(w => w.WalkDogs)
+            .HasForeignKey(wd => wd.WalkId);
+
+        modelBuilder.Entity<WalkDog>()
+            .HasOne(wd => wd.Dog)
+            .WithMany(d => d.WalkDogs)
+            .HasForeignKey(wd => wd.DogId);
         // seed data with campsite types
         modelBuilder.Entity<Neighborhood>().HasData(new Neighborhood[]
         {

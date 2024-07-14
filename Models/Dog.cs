@@ -9,5 +9,6 @@ namespace DogGo.Models
         public string? Notes { get; set; }
         public string? ImageUrl { get; set; }
         public Owner? DogOwner { get; set; }
+        public List<WalkDog>? WalkDogs { get; set; }
     }
 }
